@@ -1,15 +1,17 @@
-'use strict'
-
+'use strict';
+//dependencies
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+//start app
+// specify your port
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 app.use(cors());
 
 app.use('*', (request,response)=> {
-  response.send('404 does not exsist')
+  response.send('404 does not exist homie')
 });
 
 // Routes
@@ -19,8 +21,12 @@ app.get('/location', locationHandler);
 app.get('/weather', wtrHandler);
 app.use('*', errorHandler);
 
+
+// function Handlers
+
+
 function homeHandlr(request, response){
-  response.send('Sup Yo');
+  response.status(200).send('Sup Yo');
 }
 
 function errorHandler(request, response){
@@ -28,7 +34,21 @@ function errorHandler(request, response){
 }
 
 function locationHandler(request, response){
+  let city = request.query.city;
+  let key = process.env.GEOCODE_API_KEY;
+  const url = `api key would go here${key}${city}`;
   const locationData = require('./data/location.json');
+
+  superagent.get(url)
+    .then( data =>{
+      console.log(data.body);
+
+    })
+
+}
+
+function wtrHandler(request, response){
+  response.status(200).send('Sup Yo');
 }
 
 
@@ -50,4 +70,4 @@ function Weather(data){
 
 app.listen(PORT, ()=>{
   console.log(`Listening on ${PORT}`);
-}
+});
