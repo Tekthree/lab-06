@@ -3,22 +3,20 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const superagent = require('superagent');
 
 //start app
 // specify your port
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
-
-app.use('*', (request,response)=> {
-  response.send('404 does not exist homie')
-});
+ 
 
 // Routes
 
 app.get('/', homeHandlr);
 app.get('/location', locationHandler);
-app.get('/weather', wtrHandler);
+app.get('/weather', weatherHandler);
 app.use('*', errorHandler);
 
 
@@ -30,7 +28,7 @@ function homeHandlr(request, response){
 }
 
 function errorHandler(request, response){
-  response.status(500).send('You Busted, Everythings gone wrong');
+  response.status(404).send('You Busted, Everythings gone wrong');
 }
 
 function locationHandler(request, response){
@@ -47,7 +45,7 @@ function locationHandler(request, response){
 
 }
 
-function wtrHandler(request, response){
+function weatherHandler(request, response){
   response.status(200).send('Sup Yo');
 }
 
