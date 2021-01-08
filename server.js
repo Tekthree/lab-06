@@ -1,4 +1,6 @@
 'use strict';
+
+
 //dependencies
 require('dotenv').config();
 const express = require('express');
@@ -63,6 +65,10 @@ function Weather(data){
   let date = Date.parse(data.datetime);
   this.time = new Date(date).toDateString();
 }
+
+
+app.use(express.static('./public'));
+
 
 //start server
 
