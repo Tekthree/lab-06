@@ -34,26 +34,42 @@ function errorHandler(request, response){
 }
 
 function locationHandler(request, response){
-  let city = request.query.city;
-  let key = process.env.GEOCODE_API_KEY;
-  const url = `api key would go here${key}${city}`;
+  // link to json file
   const locationData = require('./data/location.json');
 
-  superagent.get(url)
-    .then( data =>{
-      console.log(data.body);
+  //get data that was input in search field
+  const city = request.query.city;
+  const sendData = new Location(city, locationData);
 
-    })
+
+  response.send(sendData);
+
+  // let city = request.query.city;
+  // let key = process.env.GEOCODE_API_KEY;
+  // const url = `api key would go here${key}${city}`;
+  // const locationData = require('./data/location.json');
+
+  // superagent.get(url)
+  //   .then( data =>{
+  //     console.log(data.body);
+
+  //   })
 
 }
 
 function weatherHandler(request, response){
-  response.status(200).send('Sup Yo');
+  const  weatherData = require('./data/weather.json');
+  let weatherDataArr = [];
+  weatherDataArr.data.forEach(wthrData => {
+    weatherDataArr.push( new Weather(wthrData));
+
+  });
+  response.send(weatherDataArr);
 }
 
 
-//Constructor
-function Location(city, LocationData){
+//Constructors for Location api and Weather api
+function Location(city, locationData){
   this.search_query = city;
   this.formatted_query = geoData[0].display_name;
   this.latitude = geoData[0].lat;
@@ -67,7 +83,7 @@ function Weather(data){
 }
 
 
-app.use(express.static('./public'));
+// app.use(express.static('./public'));
 
 
 //start server
