@@ -36,6 +36,7 @@ function errorHandler(request, response){
 function locationHandler(request, response){
   // link to json file
   const locationData = require('./data/location.json');
+  console.log(locationData);
 
   //get data that was input in search field
   const city = request.query.city;
@@ -71,9 +72,9 @@ function weatherHandler(request, response){
 //Constructors for Location api and Weather api
 function Location(city, locationData){
   this.search_query = city;
-  this.formatted_query = geoData[0].display_name;
-  this.latitude = geoData[0].lat;
-  this.longitude = geoData[0].lon;
+  this.formatted_query = locationData[0].display_name;
+  this.latitude = locationData[0].lat;
+  this.longitude = locationData[0].lon;
 }
 
 function Weather(data){
